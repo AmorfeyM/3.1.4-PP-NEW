@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>newUser</title>
+</head>
+<body>
+
+<form th:action="@{/users/update}" th:object="${userToUpdate}"
+      method="post" style="max-width: 600px; margin: 0 auto;">
+    <input type="hidden" th:field="*{id}" />
+    <div class="m-3">
+        <div class="form-group row">
+            <label class="col-4 col-form-label">E-mail: </label>
+            <div class="col-8">
+                <input type="email" th:field="*{email}" class="form-control" required />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-4 col-form-label">Password: </label>
+            <div class="col-8">
+                <input type="password" th:field="*{password}" class="form-control"
+                       required minlength="6" maxlength="10"/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-4 col-form-label">First Name: </label>
+            <div class="col-8">
+                <input type="text" th:field="*{firstName}" class="form-control"
+                       required minlength="2" maxlength="20"/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-4 col-form-label">Last Name: </label>
+            <div class="col-8">
+                <input type="text" th:field="*{lastName}" class="form-control"
+                       required minlength="2" maxlength="20" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-4 col-form-label">Roles: </label>
+            <div class="col-8">
+                <th:block th:each="role: ${listRoles}">
+                    <input type="checkbox" th:field="*{roles}"
+                           th:text="${role.name}" th:value="${role.id}" class="m-2" />
+                </th:block>
+            </div>
+        </div>
+
+        <div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+    </div>
+</form>
+</body>
+</html>
+
