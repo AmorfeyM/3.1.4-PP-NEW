@@ -12,9 +12,9 @@
     <input type="hidden" th:field="*{id}" />
     <div class="m-3">
         <div class="form-group row">
-            <label class="col-4 col-form-label">E-mail: </label>
+            <label class="col-4 col-form-label">Username: </label>
             <div class="col-8">
-                <input type="email" th:field="*{email}" class="form-control" required />
+                <input type="username" th:field="*{username}" class="form-control" required />
             </div>
         </div>
 
@@ -43,13 +43,21 @@
         </div>
 
         <div class="form-group row">
-            <label class="col-4 col-form-label">Roles: </label>
+            <label class="col-4 col-form-label">E-mail: </label>
             <div class="col-8">
-                <th:block th:each="role: ${listRoles}">
-                    <input type="checkbox" th:field="*{roles}"
-                           th:text="${role.name}" th:value="${role.id}" class="m-2" />
-                </th:block>
+                <input type="email" th:field="*{email}" class="form-control" required />
             </div>
+        </div>
+
+        <div class="form-group row">
+            <label>Select Roles:</label>
+            <select name="roles" id="roles" multiple="multiple" size="2">
+                <div th:each="role : ${roles}">
+                    <option th:text="${role.toString()}" th:value="${role.getId()}"/>
+                </div>
+            </select>
+            </tr>
+            </label>
         </div>
 
         <div>

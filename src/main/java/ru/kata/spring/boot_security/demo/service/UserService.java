@@ -12,7 +12,6 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -39,13 +38,8 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void saveUser(User user) {
-//        user.addRole(roleRepository.findByName("ROLE_USER"));
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-
-//        user.setRoleList(Collections.singleton(new Role("ROLE_USER")).stream().toList());
-//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-//        userRepository.save(user);
     }
 
     @Transactional
@@ -53,18 +47,9 @@ public class UserService implements UserDetailsService {
         userRepository.deleteById(id);
     }
 
-    public List<Role> listRoles() {
-        return roleRepository.findAll();
-    }
-
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        User user = userRepository.findByUsername(username);
-//        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getAuthorities());
-        return userRepository.findByUsername(username);
-    }
-    public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 

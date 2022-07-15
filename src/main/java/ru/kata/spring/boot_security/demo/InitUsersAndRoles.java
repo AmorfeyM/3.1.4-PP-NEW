@@ -9,13 +9,12 @@ import ru.kata.spring.boot_security.demo.repository.UserRepository;
 import javax.annotation.PostConstruct;
 
 @Component
-public class MainDataBaseTest {
+public class InitUsersAndRoles {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
-
-    public MainDataBaseTest(UserRepository userRepository, RoleRepository roleRepository) {
+    public InitUsersAndRoles(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
     }
@@ -53,7 +52,6 @@ public class MainDataBaseTest {
         userRepository.save(user2);
         userRepository.save(user3);
 
-        System.out.println(userRepository.findByUsername("Gena"));
     }
 }
 

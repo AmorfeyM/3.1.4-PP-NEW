@@ -20,8 +20,15 @@
 
     <tr><label for="email">Enter Email:</label><input type="text" th:field="*{email}" id = "email"/></tr>
 
-
-  </table>
+    <tr><label>Select Roles:</label>
+      <select name="roles" id="roles" multiple="multiple" size="2">
+        <div th:each="role : ${roles}">
+          <option th:text="${role.toString()}" th:value="${role.getId()}"/>
+        </div>
+      </select>
+    </tr>
+    </label>
+ </table>
   <input type="submit" value="AddUser">
 
 </form>
