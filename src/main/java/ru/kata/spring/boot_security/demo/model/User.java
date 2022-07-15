@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.model;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,7 +17,6 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
-@Data
 public class User implements UserDetails {
 
    @Id
@@ -23,17 +24,17 @@ public class User implements UserDetails {
    @Column(name = "id")
    private Long id;
 
-   @Column(name = "userName")
-   private String username;
-
    @Column(name = "firstname")
    private String firstName;
 
    @Column(name = "lastname")
    private String lastName;
 
+   @Column(name = "age")
+   private int age;
+
    @Column(name = "email")
-   private String email;
+   private String username;
 
    @Column(name = "password")
    private String password;
@@ -53,45 +54,89 @@ public class User implements UserDetails {
       this.password = password;
    }
 
-
    @Override
    public Collection<? extends GrantedAuthority> getAuthorities() {
-      return getRoles().stream()
+      return getRoleList().stream()
               .map(role -> new SimpleGrantedAuthority(role.getName()))
               .collect(Collectors.toList());
    }
 
    @Override
    public String getUsername() {
-      return email;
+      return username;
    }
-
    @Override
    public boolean isAccountNonExpired() {
       return true;
    }
-
    @Override
    public boolean isAccountNonLocked() {
       return true;
    }
-
    @Override
    public boolean isCredentialsNonExpired() {
       return true;
    }
-
    @Override
    public boolean isEnabled() {
       return true;
    }
 
-   public void addRole(Role role) {
+   public void setRole(Role role) {
       roleList.add(role);
    }
 
-   public List<Role> getRoles() {
+   public Long getId() {
+      return id;
+   }
+
+   public String getFirstName() {
+      return firstName;
+   }
+
+   public String getLastName() {
+      return lastName;
+   }
+
+   public int getAge() {
+      return age;
+   }
+
+   @Override
+   public String getPassword() {
+      return password;
+   }
+
+   public List<Role> getRoleList() {
       return roleList;
+   }
+
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   public void setFirstName(String firstName) {
+      this.firstName = firstName;
+   }
+
+   public void setLastName(String lastName) {
+      this.lastName = lastName;
+   }
+
+   public void setAge(int age) {
+      this.age = age;
+   }
+
+   public void setUsername(String username) {
+      this.username = username;
+   }
+
+   public void setPassword(String password) {
+      this.password = password;
+   }
+
+   public void setRoleList(List<Role> roleList) {
+      this.roleList = roleList;
    }
 
    @Override
@@ -113,7 +158,7 @@ public class User implements UserDetails {
               "id=" + id +
               ", firstName='" + firstName + '\'' +
               ", lastName='" + lastName + '\'' +
-              ", email='" + email + '\'' +
+              ", email='" + username + '\'' +
               ", roleList=" + roleList +
               '}';
    }

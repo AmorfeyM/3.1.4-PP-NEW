@@ -3,7 +3,6 @@ package ru.kata.spring.boot_security.demo.model;
 import lombok.Data;
 import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
-
 import javax.persistence.*;
 import java.util.Objects;
 

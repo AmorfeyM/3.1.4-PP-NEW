@@ -2,46 +2,51 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Users</title>
 </head>
 <body>
-<table border="3">
+<div class="container-fluid text-center">
+<table class="table table-header " >
     <thead class="thead-dark">
-    <tr>
-        <th>User ID</th>
-        <th>Username</th>
-        <th>Password</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-        <th>Roles</th>
-        <th></th>
-    </tr>
+        <tr class="b">
+            <th>User ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Age</th>
+            <th>Email</th>
+            <th colspan="2&gt">Roles</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
     </thead>
     <tbody>
-    <tr th:each = "user : ${users}">
-        <td th:text="${user.id}">User ID</td>
-        <td th:text="${user.username}">Username</td>
-        <td th:text="${user.password}">Password</td>
-        <td th:text="${user.firstName}">First Name</td>
-        <td th:text="${user.lastName}">Last Name</td>
-        <td th:text="${user.email}">E-mail</td>
+        <th:block th:each = "user : ${users}">
+            <tr>
+                <td th:text="${user.id}">User ID</td>
+                <td th:text="${user.firstName}">First Name</td>
+                <td th:text="${user.lastName}">Last Name</td>
+                <td th:text="${user.age}">Age</td>
+                <td th:text="${user.username}">Email</td>
 
-        <td th:each="role : ${user.roleList}" th:text="${role.getName()}">Roles</td>
-        <td>
-            <form th:action="@{/admin/update/{id}(id=${user.getId()})}" th:method="GET">
-                <input type="submit" value="Edit"/>
-        </form>
-        </td>
-        <td>
-            <form th:action="@{/admin/deleteUser/{id}(id=${user.getId()})}" th:method="DELETE">
-                <input type="submit" value="Delete"/>
-            </form>
-        </td>
-    </tr>
+                <td th:each="role : ${user.roleList}" th:text="${role.getName()}">Role</td>
+                <td>
+                    <form th:action="@{/admin/update/{id}(id=${user.getId()})}" th:method="GET">
+                        <input type="submit" value="Edit"/>
+                    </form>
+                </td>
+                <td>
+                    <form th:action="@{/admin/deleteUser/{id}(id=${user.getId()})}" th:method="DELETE">
+                        <input type="submit" value="Delete"/>
+                    </form>
+                </td>
+            </tr>
+        </th:block>
     </tbody>
 </table>
+</div>
 <form th:action="@{/admin/addUserForm}" th:method="GET">
     <input type="submit" value="AddUser"/>
 </form>
@@ -49,5 +54,8 @@
     <input type="submit" value="Sign Out"/>
 </form>
 
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>
