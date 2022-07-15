@@ -5,12 +5,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
@@ -51,46 +54,62 @@ public class UserRepositoryTests {
 
     @Test
     public void testCreateUser() {
-        User user = new User();
-        user.setEmail("ravikumar@gmail.com");
-        user.setPassword("ravi2020");
-        user.setFirstName("Ravi");
-        user.setLastName("Kumar");
+        User user1 = new User("AmorfeyM", "111");
 
-        User savedUser = userRepo.save(user);
+        User savedUser = userRepo.save(user1);
 
         User existUser = entityManager.find(User.class, savedUser.getId());
 
-        assertThat(user.getEmail()).isEqualTo(existUser.getEmail());
+        assertThat(user1.getEmail()).isEqualTo(existUser.getEmail());
     }
 
     @Test
     public void testAddRoleToNewUser() {
         Role roleAdmin = roleRepo.findByName("Admin");
 
-        User user = new User();
-        user.setEmail("mikes.gates@gmail.com");
-        user.setPassword("mike2020");
-        user.setFirstName("Mike");
-        user.setLastName("Gates");
-        user.addRole(roleAdmin);
+        User user2 = new User("Rick", "222");
+        user2.addRole(roleAdmin);
 
-        User savedUser = userRepo.save(user);
+        User savedUser = userRepo.save(user2);
 
         assertThat(savedUser.getRoles().size()).isEqualTo(1);
     }
 
     @Test
     public void testAddRoleToExistingUser() {
-        User user = userRepo.findById(1L).get();
+        Role user = new Role("USER");
+        Role admin = new Role("ADMIN");
+
+        roleRepo.save(user);
+        roleRepo.save(admin);
+
+        User user1 = new User("Amorfeym", "$2a$12$54rDWKSismZ9uGff8bWwvetMn/YqhjzHl0P3D7JxY8GSyXeI2zM9e");//111
+        User user2 = new User("Morty","$2a$12$54rDWKSismZ9uGff8bWwvetMn/YqhjzHl0P3D7JxY8GSyXeI2zM9e");//111
+        User user3 = new User("Gena", "$2a$12$54rDWKSismZ9uGff8bWwvetMn/YqhjzHl0P3D7JxY8GSyXeI2zM9e");//111
+
+
+        user1.addRole(roleRepo.findByName("ADMIN"));
+        user1.addRole(roleRepo.findByName("USER"));
+        user2.addRole(roleRepo.findByName("ADMIN"));
+        user3.addRole(roleRepo.findByName("USER"));
+
+        userRepo.save(user1);
+        userRepo.save(user2);
+        userRepo.save(user3);
+
+        User userTest = userRepo.findByUsername("Gena");
         Role roleUser = roleRepo.findByName("User");
-        Role roleCustomer = new Role(3L);
+        Role roleAdmin = roleRepo.findByName("Admin");
 
-        user.addRole(roleUser);
-        user.addRole(roleCustomer);
+        userTest.addRole(roleUser);
+        userTest.addRole(roleAdmin);
 
-        User savedUser = userRepo.save(user);
+        User savedUser = userRepo.save(userTest);
 
-        assertThat(savedUser.getRoles().size()).isEqualTo(2);
+        List<Role> roleList = userRepo.findByUsername("Gena").getRoleList();
+
+        assertThat(savedUser.getRoles().size()).isEqualTo(3);
+        assertThat(roleList.size()).isEqualTo(3);
+
     }
 }

@@ -1,10 +1,9 @@
 package ru.kata.spring.boot_security.demo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,26 +14,18 @@ import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 @Service
-public class UserService{
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder bCryptPasswordEncoder;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
-
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, @Lazy PasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-    }
-
-    public void registerDefaultUser(User user) {
-        Role roleUser = roleRepository.findByName("User");
-        user.addRole(roleUser);
-
-        userRepository.save(user);
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public User findById(Long id) {
@@ -47,17 +38,14 @@ public class UserService{
 
 
     @Transactional
-    public boolean saveUser(User user) {
-        User userFromDB = userRepository.findByEmail(user.getEmail());
-        if (userFromDB != null) {
-            return false;
-        }
-
-        user.setRoles(new Role("User"));
+    public void saveUser(User user) {
+//        user.addRole(roleRepository.findByName("ROLE_USER"));
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
-        return true;
+//        user.setRoleList(Collections.singleton(new Role("ROLE_USER")).stream().toList());
+//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+//        userRepository.save(user);
     }
 
     @Transactional
@@ -65,12 +53,23 @@ public class UserService{
         userRepository.deleteById(id);
     }
 
-    public User findByEmail(String mail) {
-        return userRepository.findByEmail(mail);
-    }
-
     public List<Role> listRoles() {
         return roleRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        User user = userRepository.findByUsername(username);
+//        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getAuthorities());
+        return userRepository.findByUsername(username);
+    }
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    public User findByEmail(String email) {
+        return  userRepository.findByEmail(email);
     }
 
 }

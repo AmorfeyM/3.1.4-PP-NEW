@@ -7,8 +7,8 @@
 </head>
 <body>
 
-<form th:action="@{/users/update}" th:object="${userToUpdate}"
-      method="post" style="max-width: 600px; margin: 0 auto;">
+<form th:action="@{/admin/updateUser}" th:object="${userToUpdate}"
+      th:method="patch" style="max-width: 600px; margin: 0 auto;">
     <input type="hidden" th:field="*{id}" />
     <div class="m-3">
         <div class="form-group row">

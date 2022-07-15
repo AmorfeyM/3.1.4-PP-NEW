@@ -3,21 +3,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>newUser</title>
+    <title>User</title>
 </head>
 <body>
 
-<form th:method="POST" th:action="@{/addUser}" th:object="${newUser}">
+<form th:method="GET" th:object="${user}">
+<table>
+    <tr><h1 th:text = "*{username}"></h1></tr>
 
-    <label for="firstName">Enter FirstName:</label><input type="text" th:field="*{firstName}" id = "firstName"/>
+    <tr><h1 th:text = "*{firstName}"></h1></tr>
 
-    <label for="lastName">Enter LastName:</label><input type="text" th:field="*{lastName}" id = "lastName"/>
+    <tr><h1 th:text = "*{lastName}"></h1></tr>
 
-    <label for="email">Enter Email:</label><input type="text" th:field="*{email}" id = "email"/>
+    <tr><h1 th:text = "*{email}"></h1></tr>
 
-    <input type="submit" value="AddUser">
+</table>
+
 
 </form>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Logout"/>
+</form>
+
+
 </body>
 </html>
 

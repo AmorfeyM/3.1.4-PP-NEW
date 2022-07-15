@@ -1,10 +1,17 @@
 package ru.kata.spring.boot_security.demo.model;
+
 import lombok.Data;
+import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
@@ -16,6 +23,9 @@ public class User implements UserDetails {
    @Column(name = "id")
    private Long id;
 
+   @Column(name = "userName")
+   private String username;
+
    @Column(name = "firstname")
    private String firstName;
 
@@ -25,6 +35,7 @@ public class User implements UserDetails {
    @Column(name = "email")
    private String email;
 
+   @Column(name = "password")
    private String password;
 
    @ManyToMany(fetch = FetchType.EAGER)
@@ -33,11 +44,21 @@ public class User implements UserDetails {
            joinColumns = @JoinColumn(name = "user_id"),
            inverseJoinColumns = @JoinColumn(name = "role_id")
    )
-   private List<Role> roleSet = new ArrayList<>();
+   private List<Role> roleList = new ArrayList<>();
+
+   public User() {
+   }
+   public User(String username, String password) {
+      this.username = username;
+      this.password = password;
+   }
+
 
    @Override
    public Collection<? extends GrantedAuthority> getAuthorities() {
-      return getRoles();
+      return getRoles().stream()
+              .map(role -> new SimpleGrantedAuthority(role.getName()))
+              .collect(Collectors.toList());
    }
 
    @Override
@@ -47,33 +68,53 @@ public class User implements UserDetails {
 
    @Override
    public boolean isAccountNonExpired() {
-      return false;
+      return true;
    }
 
    @Override
    public boolean isAccountNonLocked() {
-      return false;
+      return true;
    }
 
    @Override
    public boolean isCredentialsNonExpired() {
-      return false;
+      return true;
    }
 
    @Override
    public boolean isEnabled() {
-      return false;
-   }
-
-   public void setRoles(Role role) {
-      this.roleSet.add(role);
+      return true;
    }
 
    public void addRole(Role role) {
-      roleSet.add(role);
+      roleList.add(role);
    }
 
    public List<Role> getRoles() {
-      return roleSet;
+      return roleList;
+   }
+
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+      User user = (User) o;
+      return id != null && Objects.equals(id, user.id);
+   }
+
+   @Override
+   public int hashCode() {
+      return getClass().hashCode();
+   }
+
+   @Override
+   public String toString() {
+      return "User{" +
+              "id=" + id +
+              ", firstName='" + firstName + '\'' +
+              ", lastName='" + lastName + '\'' +
+              ", email='" + email + '\'' +
+              ", roleList=" + roleList +
+              '}';
    }
 }
