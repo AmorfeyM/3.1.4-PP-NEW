@@ -8,16 +8,17 @@
     <title>Users</title>
 </head>
 <body>
-<div class="container-fluid text-center">
-<table class="table table-header " >
-    <thead class="thead-dark">
+<div class="container-fluid">
+<table class="table table-header table-hover" th:cols="9">
+    <thead class="thead align-content-center">
         <tr class="b">
             <th>User ID</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Age</th>
             <th>Email</th>
-            <th colspan="2&gt">Roles</th>
+            <th>Role</th>
+            <th></th>
             <th>Edit</th>
             <th>Delete</th>
         </tr>
@@ -31,7 +32,9 @@
                 <td th:text="${user.age}">Age</td>
                 <td th:text="${user.username}">Email</td>
 
-                <td th:each="role : ${user.roleList}" th:text="${role.getName()}">Role</td>
+                <td th:text="${user.getRoleList().get(0).getName()}">Role</td>
+                <td th:if="${user.getRoleList().size()} > 1" th:text="${user.getRoleList().get(1).getName()}">Role</td>
+
                 <td>
                     <form th:action="@{/admin/update/{id}(id=${user.getId()})}" th:method="GET">
                         <input type="submit" value="Edit"/>
