@@ -1,31 +1,89 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<html lang="en">
+
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <meta charset="UTF-8">
-    <title>User</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>User information page</title>
 </head>
 <body>
+<div class="container-fluid">
+    <div class="row">
 
-<form th:method="GET" th:object="${user}">
-<table>
-    <tr><h1 th:text = "*{username}"></h1></tr>
+        <!--    Заголовок-->
+        <div class="col-sm-12 p-2 bg-dark text-white ">
+            <a class="font-weight-bold text-white" th:text="${admin.username}">Email </a>
+            <a> with role:</a>
 
-    <tr><h1 th:text = "*{firstName}"></h1></tr>
+            <a th:each="role : ${admin.roleList}">
+                <a th:text="${role.name.replaceAll('ROLE_', '')}">Roles</a>
+            </a>
+            <a href="/logout" class="float-right text-secondary"> Logout </a>
+        </div>
 
-    <tr><h1 th:text = "*{lastName}"></h1></tr>
+        <!--        Кнопки-таблетки слева USER-->
+        <div class="col-sm-2" style="padding-left: 0px; padding-right: 0px">
+            <ul class="nav nav-tabs flex-column">
 
-    <tr><h1 th:text = "*{age}"></h1></tr>
+                <li class="nav-pills">
+                    <!--                    Ставим маркер #user на кнопку.  -->
+                    <a class="nav-link active" data-toggle="tab" href="#user">User</a>
+                </li>
 
-</table>
+            </ul>
+
+        </div>
+
+        <div class="col-sm-10 height: 1200 px" style="height: 1000px; background: #F7F7F7">
 
 
-</form>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Logout"/>
-</form>
 
 
+            <!--            Вкладка для юзера (без прав админа)-->
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="user">
+                    <div class="col-sm-12 p-3">
+                        <h1>User information page</h1>
+                    </div>
+                    <tr>
+                        <td>
+                            <form th:method="GET" th:object="${admin}">
+                                <table class="table table-header table-hover bg-white" th:cols="9">
+                                    <thead class="thead align-content-center">
+                                    <tr class="b">
+                                        <th>User ID</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Age</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td th:text="${admin.id}">User ID</td>
+                                        <td th:text="${admin.firstName}">First Name</td>
+                                        <td th:text="${admin.lastName}">Last Name</td>
+                                        <td th:text="${admin.age}">Age</td>
+                                        <td th:text="${admin.username}">Email</td>
+                                        <td th:text="${admin.getRoleList().get(0).getName()}">Role</td>
+                                        <td> <th:block th:if="${admin.getRoleList().size()} > 1" th:text="${admin.getRoleList().get(1).getName()}">Role</th:block></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </td>
+                    </tr>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>
-

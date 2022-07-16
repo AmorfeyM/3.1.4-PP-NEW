@@ -30,6 +30,11 @@ public class Role implements GrantedAuthority {
         return name;
     }
 
+    public String getShortRole() {
+
+        return this.name.replaceAll("ROLE_", "");
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
