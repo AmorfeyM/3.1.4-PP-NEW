@@ -16,7 +16,7 @@
             <a class="font-weight-bold text-white" th:text="${admin.username}">Email </a>
             <a> with role:</a>
 
-            <a th:each="role : ${admin.roleList}">
+            <a th:each="role : ${admin.roleSet}">
                 <a th:text="${role.getShortRole()}">Roles</a>
             </a>
             <a href="/logout" class="float-right text-secondary"> Logout </a>
@@ -93,7 +93,7 @@
                                                                     <th>Age</th>
                                                                     <th>Email</th>
                                                                     <th>Role</th>
-                                                                    <th></th>
+
                                                                     <th>Edit</th>
                                                                     <th>Delete</th>
                                                                 </tr>
@@ -107,8 +107,10 @@
                                                                         <td th:text="${user.age}">Age</td>
                                                                         <td th:text="${user.username}">Email</td>
 
-                                                                        <td th:text="${user.getRoleList().get(0).getShortRole()}">Role</td>
-                                                                        <td> <th:block th:if="${user.getRoleList().size()} > 1" th:text="${user.getRoleList().get(1).getShortRole()}">Role</th:block></td>
+
+                                                                        <td> <a th:each="role : ${user.roleSet}">
+                                                                            <a th:text="${role.getShortRole()}">Roles</a>
+                                                                        </a></td>
 
         <!--                                                                Модальное окно метод Edit-->
 
@@ -168,7 +170,7 @@
                                                                                                                 <div class="form-group text-center">
                                                                                                                     <strong >Email</strong>
                                                                                                                     <input type="text" class="form-control"
-                                                                                                                           name="email" th:value="${user.username}"
+                                                                                                                           name="username" th:value="${user.username}"
                                                                                                                            id="edit-email"/>
                                                                                                                 </div>
                                                                                                                 <div class="form-group text-center">
@@ -276,7 +278,7 @@
                                                                                                             <div class="form-group text-center">
                                                                                                                 <strong >Role</strong>
                                                                                                                 <select class="form-control" name="roles" multiple size="2" readonly="true">
-                                                                                                                    <div th:each="role : ${user.roleList}">
+                                                                                                                    <div th:each="role : ${user.roleSet}">
                                                                                                                         <option th:text="${role.getShortRole()}" th:value="${role.id}" name="roles">
                                                                                                                         </option>
                                                                                                                     </div>
@@ -397,7 +399,7 @@
                                                     <th>Age</th>
                                                     <th>Email</th>
                                                     <th>Role</th>
-                                                    <th></th>
+
                                                 </tr>
                                             </thead>
                                                 <tbody>
@@ -407,8 +409,9 @@
                                                         <td th:text="${admin.lastName}">Last Name</td>
                                                         <td th:text="${admin.age}">Age</td>
                                                         <td th:text="${admin.username}">Email</td>
-                                                        <td th:text="${admin.getRoleList().get(0).getShortRole()}">Role</td>
-                                                        <td> <th:block th:if="${admin.getRoleList().size()} > 1" th:text="${admin.getRoleList().get(1).getShortRole()}">Role</th:block></td>
+                                                        <td> <a th:each="role : ${admin.roleSet}">
+                                                            <a th:text="${role.getShortRole()}">Roles</a>
+                                                        </a></td>
                                                     </tr>
                                                 </tbody>
                                         </table>

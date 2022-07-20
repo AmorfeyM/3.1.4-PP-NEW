@@ -1,22 +1,25 @@
 package ru.kata.spring.boot_security.demo.model;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
+@Getter
+@Setter
+@ToString
 public class User implements UserDetails {
 
    @Id
@@ -39,13 +42,15 @@ public class User implements UserDetails {
    @Column(name = "password")
    private String password;
 
-   @ManyToMany(fetch = FetchType.EAGER)
+   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
    @JoinTable(
            name = "users_roles",
            joinColumns = @JoinColumn(name = "user_id"),
            inverseJoinColumns = @JoinColumn(name = "role_id")
    )
-   private List<Role> roleList = new ArrayList<>();
+   @Fetch(FetchMode.JOIN)
+   @ToString.Exclude
+   private Set<Role> roleSet = new HashSet<>();
 
    public User() {
    }
@@ -56,7 +61,7 @@ public class User implements UserDetails {
 
    @Override
    public Collection<? extends GrantedAuthority> getAuthorities() {
-      return getRoleList().stream()
+      return getRoleSet().stream()
               .map(role -> new SimpleGrantedAuthority(role.getName()))
               .collect(Collectors.toList());
    }
@@ -83,60 +88,7 @@ public class User implements UserDetails {
    }
 
    public void setRole(Role role) {
-      roleList.add(role);
-   }
-
-   public Long getId() {
-      return id;
-   }
-
-   public String getFirstName() {
-      return firstName;
-   }
-
-   public String getLastName() {
-      return lastName;
-   }
-
-   public int getAge() {
-      return age;
-   }
-
-   @Override
-   public String getPassword() {
-      return password;
-   }
-
-   public List<Role> getRoleList() {
-      return roleList;
-   }
-
-   public void setId(Long id) {
-      this.id = id;
-   }
-
-   public void setFirstName(String firstName) {
-      this.firstName = firstName;
-   }
-
-   public void setLastName(String lastName) {
-      this.lastName = lastName;
-   }
-
-   public void setAge(int age) {
-      this.age = age;
-   }
-
-   public void setUsername(String username) {
-      this.username = username;
-   }
-
-   public void setPassword(String password) {
-      this.password = password;
-   }
-
-   public void setRoleList(List<Role> roleList) {
-      this.roleList = roleList;
+      roleSet.add(role);
    }
 
    @Override
@@ -159,7 +111,7 @@ public class User implements UserDetails {
               ", firstName='" + firstName + '\'' +
               ", lastName='" + lastName + '\'' +
               ", email='" + username + '\'' +
-              ", roleList=" + roleList +
+              ", roleList=" + roleSet +
               '}';
    }
 }

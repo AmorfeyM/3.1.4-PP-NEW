@@ -16,7 +16,7 @@
             <a class="font-weight-bold text-white" th:text="${admin.username}">Email </a>
             <a> with role:</a>
 
-            <a th:each="role : ${admin.roleList}">
+            <a th:each="role : ${admin.roleSet}">
                 <a th:text="${role.name.replaceAll('ROLE_', '')}">Roles</a>
             </a>
             <a href="/logout" class="float-right text-secondary"> Logout </a>
@@ -67,8 +67,9 @@
                                         <td th:text="${admin.lastName}">Last Name</td>
                                         <td th:text="${admin.age}">Age</td>
                                         <td th:text="${admin.username}">Email</td>
-                                        <td th:text="${admin.getRoleList().get(0).getName()}">Role</td>
-                                        <td> <th:block th:if="${admin.getRoleList().size()} > 1" th:text="${admin.getRoleList().get(1).getName()}">Role</th:block></td>
+                                        <td> <a th:each="role : ${admin.roleSet}">
+                                            <a th:text="${role.getShortRole()}">Roles</a>
+                                        </a></td>
                                     </tr>
                                     </tbody>
                                 </table>
