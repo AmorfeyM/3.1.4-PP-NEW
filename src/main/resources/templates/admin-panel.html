@@ -19,7 +19,7 @@
             <a th:each="role : ${admin.roleSet}">
                 <a th:text="${role.getShortRole()}">Roles</a>
             </a>
-            <a href="/logout" class="float-right text-secondary"> Logout </a>
+            <a th:href="@{/logout}" class="float-right text-secondary" > Logout </a>
         </div>
 
     <!--        Кнопки-таблетки слева ADMIN USER-->
