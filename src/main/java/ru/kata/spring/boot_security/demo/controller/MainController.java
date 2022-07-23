@@ -24,35 +24,45 @@ public class MainController {
     }
 
     @GetMapping("/admin-panel")
-    public String adminInfo(Principal principal, Model model, @ModelAttribute("newUser") User user) {
-        User admin = userService.findByEmail(principal.getName());
-        model.addAttribute("admin", admin);
-        List<User> users = userService.findAll();
-        model.addAttribute("users", users);
-        model.addAttribute("roles", roleService.findAll());
-
+    public String adminPage() {
         return "admin-panel";
     }
 
-    @PostMapping("/admin/addUser")
-    public String addUser(@ModelAttribute("newUser") User user,
-                          @RequestParam("roles") Set<Role> roles) {
-        user.setRoleSet(roles);
-        userService.saveUser(user);
-        return "redirect:/admin-panel";
+    @GetMapping("/viewUser")
+    public  String userPage() {
+        return "viewUser";
     }
 
-    @DeleteMapping("/admin/deleteUser/{id}")
-    public String delete(@PathVariable("id") long id) {
-        userService.deleteById(id);
-        return "redirect:/admin-panel";
-    }
-
-    @PatchMapping("/admin/updateUser/{id}")
-    public String updateUser(User user, @RequestParam("roles") Set<Role> roles) {
-        user.setRoleSet(roles);
-        userService.saveUser(user);
-        return "redirect:/admin-panel";
-    }
+//    @GetMapping("/admin-panel")
+//    public String adminInfo(Principal principal, Model model, @ModelAttribute("newUser") User user) {
+//        User admin = userService.findByEmail(principal.getName());
+//        model.addAttribute("admin", admin);
+//        List<User> users = userService.findAll();
+//        model.addAttribute("users", users);
+//        model.addAttribute("roles", roleService.findAll());
+//
+//        return "admin-panel";
+//    }
+//
+//    @PostMapping("/admin/addUser")
+//    public String addUser(@ModelAttribute("newUser") User user,
+//                          @RequestParam("roles") Set<Role> roles) {
+//        user.setRoleSet(roles);
+//        userService.saveUser(user);
+//        return "redirect:/admin-panel";
+//    }
+//
+//    @DeleteMapping("/admin/deleteUser/{id}")
+//    public String delete(@PathVariable("id") long id) {
+//        userService.deleteById(id);
+//        return "redirect:/admin-panel";
+//    }
+//
+//    @PatchMapping("/admin/updateUser/{id}")
+//    public String updateUser(User user, @RequestParam("roles") Set<Role> roles) {
+//        user.setRoleSet(roles);
+//        userService.saveUser(user);
+//        return "redirect:/admin-panel";
+//    }
 }
 

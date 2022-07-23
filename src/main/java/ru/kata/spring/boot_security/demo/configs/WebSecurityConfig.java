@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,17 +25,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests().antMatchers("/resources/**").permitAll();
         http
+                .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/admin/**").hasRole("ADMIN")
-                    .antMatchers("/admin-panel/**").hasRole("ADMIN")
-                    .antMatchers("/user/**").hasAnyRole("ADMIN", "USER")
-                    .anyRequest().authenticated()
+                    .antMatchers("/", "/login/**").permitAll()
+                    .antMatchers("/viewUser", "/api/viewUser").hasAnyRole("ADMIN", "USER")
+                    .antMatchers("/**").hasRole("ADMIN")
                 .and()
                     .formLogin().loginPage("/login").permitAll().successHandler(successUserHandler)
                 .and()
                     .logout()
-                    .permitAll();
+                    .permitAll()
+                .and()
+                    .httpBasic();
+    }
+    @Override
+    public void configure(WebSecurity web) {
+        web
+                .ignoring()
+                .antMatchers("/resources/**");
     }
 
     @Bean
