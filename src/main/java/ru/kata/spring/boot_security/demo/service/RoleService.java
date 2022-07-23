@@ -12,4 +12,6 @@ public interface RoleService {
 
     void save(Role role);
 
+    Role findById(Long id);
+
 }

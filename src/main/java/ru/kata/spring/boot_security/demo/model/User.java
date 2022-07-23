@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.Fetch;
@@ -36,7 +37,7 @@ public class User implements UserDetails {
    @Column(name = "age")
    private int age;
 
-   @Column(name = "email")
+   @Column(name = "email", unique = true, nullable = false)
    private String username;
 
    @Column(name = "password")
@@ -50,7 +51,7 @@ public class User implements UserDetails {
    )
    @Fetch(FetchMode.JOIN)
    @ToString.Exclude
-   private Set<Role> roleSet = new HashSet<>();
+   private Set<Role> roles = new HashSet<>();
 
    public User() {
    }
@@ -60,10 +61,9 @@ public class User implements UserDetails {
    }
 
    @Override
+
    public Collection<? extends GrantedAuthority> getAuthorities() {
-      return getRoleSet().stream()
-              .map(role -> new SimpleGrantedAuthority(role.getName()))
-              .collect(Collectors.toList());
+      return roles;
    }
 
    @Override
@@ -71,24 +71,28 @@ public class User implements UserDetails {
       return username;
    }
    @Override
+   @JsonIgnore
    public boolean isAccountNonExpired() {
       return true;
    }
    @Override
+   @JsonIgnore
    public boolean isAccountNonLocked() {
       return true;
    }
    @Override
+   @JsonIgnore
    public boolean isCredentialsNonExpired() {
       return true;
    }
    @Override
+   @JsonIgnore
    public boolean isEnabled() {
       return true;
    }
 
    public void setRole(Role role) {
-      roleSet.add(role);
+      roles.add(role);
    }
 
    @Override
@@ -111,7 +115,7 @@ public class User implements UserDetails {
               ", firstName='" + firstName + '\'' +
               ", lastName='" + lastName + '\'' +
               ", email='" + username + '\'' +
-              ", roleList=" + roleSet +
+              ", roleList=" + roles +
               '}';
    }
 }

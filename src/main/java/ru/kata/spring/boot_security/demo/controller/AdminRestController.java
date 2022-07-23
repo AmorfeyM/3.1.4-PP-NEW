@@ -14,12 +14,12 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
-public class MyRestController {
+public class AdminRestController {
 
     private UserService userService;
     private RoleService roleService;
 
-    public MyRestController(UserService userService, RoleService roleService) {
+    public AdminRestController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
@@ -45,10 +45,10 @@ public class MyRestController {
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
-    @PutMapping("/users")
+    @PatchMapping("/users/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         userService.saveUser(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/users/{id}")
@@ -67,4 +67,10 @@ public class MyRestController {
         return new ResponseEntity<>(roleService.findAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/roles/{id}")
+    ResponseEntity<Role> getRoleById(@PathVariable("id") Long id){
+        return new ResponseEntity<>(roleService.findById(id), HttpStatus.OK);
+    }
 }
+
+

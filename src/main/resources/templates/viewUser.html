@@ -18,6 +18,7 @@
         <div class="row">
             <div class="col-12">
                 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+                    <!-- Navbar content -->
                     <div class="collapse navbar-collapse" id="user">
                         <ul class="navbar-nav mr-auto">
                             <a class="navbar-brand font-weight-bold" id="headerUsername"></a>
@@ -36,12 +37,14 @@
     </div>
 </header>
 
+<!--Основной контент страницы-->
+
 <div class="container-fluid">
     <div class="row">
 
         <!--Панель слева-->
 
-        <div class="col-2" style="padding: 15px 0 0;">
+        <div class="col-2" style="padding: 0; padding-top: 15px">
             <ul class="nav nav-pills flex-column">
                 <li class="nav-item">
                     <a class="nav-link active" data-toggle="tab" href="#userPanel">User</a>
@@ -49,6 +52,7 @@
             </ul>
         </div>
 
+        <!--Панель справа-->
 
         <div class="col-10 bg-light">
             <div class="tab-content" style="padding-top: 15px; height: 100vh">
@@ -64,25 +68,25 @@
                                 <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>First Name</th>
+                                    <th>Name</th>
                                     <th>Last Name</th>
-                                    <th>Age</th>
                                     <th>Email</th>
                                     <th>Role</th>
                                 </tr>
                                 </thead>
-                                <tbody id="tbody">
+                                <tbody id="userPanelBody">
                                 </tbody>
                             </table>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-
+<!-- Отдельные JS для Popper и Bootstrap -->
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -94,8 +98,8 @@
         integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2"
         crossorigin="anonymous"></script>
 
+<!-- JS -->
 
-
-<script type="text/javascript" src="userApp.js"></script>
+<script type="text/javascript" src="UserPage.js"></script>
 </body>
 </html>

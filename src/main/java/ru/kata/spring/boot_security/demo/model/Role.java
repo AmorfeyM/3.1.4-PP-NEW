@@ -8,7 +8,6 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "roles")
-@Data
 public class Role implements GrantedAuthority {
 
     @Id
@@ -29,10 +28,10 @@ public class Role implements GrantedAuthority {
         return name;
     }
 
-    public String getShortRole() {
-
-        return this.name.replaceAll("ROLE_", "");
-    }
+//    public String getShortRole() {
+//
+//        return this.name.replaceAll("ROLE_", "");
+//    }
 
     @Override
     public boolean equals(Object o) {
@@ -40,6 +39,22 @@ public class Role implements GrantedAuthority {
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Role role = (Role) o;
         return id != null && Objects.equals(id, role.id);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

@@ -34,8 +34,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Transactional
     public void saveUser(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+//        if (userRepository.findByUsername(user.getUsername()) == null) {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
+//        }
     }
 
     @Transactional
