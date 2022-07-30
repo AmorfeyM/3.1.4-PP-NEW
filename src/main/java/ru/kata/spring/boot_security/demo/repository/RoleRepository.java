@@ -13,9 +13,5 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
     @Override
     <S extends Role> List<S> saveAll(Iterable<S> entities);
 
-    @Override
-    List<Role> findAll();
-
     Role findByName(String name);
-    Optional<Role> findById(Long id);
 }

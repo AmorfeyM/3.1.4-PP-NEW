@@ -16,8 +16,8 @@ import java.util.Set;
 @RequestMapping("/api")
 public class AdminRestController {
 
-    private UserService userService;
-    private RoleService roleService;
+    private final UserService userService;
+    private final RoleService roleService;
 
     public AdminRestController(UserService userService, RoleService roleService) {
         this.userService = userService;
@@ -47,7 +47,7 @@ public class AdminRestController {
 
     @PatchMapping("/users/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
-        userService.saveUser(user);
+        userService.updateUser(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

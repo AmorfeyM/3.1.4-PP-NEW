@@ -34,10 +34,16 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Transactional
     public void saveUser(User user) {
-//        if (userRepository.findByUsername(user.getUsername()) == null) {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             userRepository.save(user);
-//        }
+    }
+
+    @Transactional
+    public void updateUser(User user) {
+        if (!user.getPassword().equals(userRepository.getById(user.getId()).getPassword())) {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        }
+        userRepository.save(user);
     }
 
     @Transactional
@@ -45,7 +51,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         userRepository.deleteById(id);
     }
 
-    @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username);
